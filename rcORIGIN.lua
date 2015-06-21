@@ -48,7 +48,7 @@ function run_once(cmd)
   awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
 end
 
-run_once("rxvt")
+run_once("urxvtd")
 run_once("unclutter -root")
 -- }}}
 
@@ -60,12 +60,12 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/holo/theme.lua")
 -- common
 modkey     = "Mod4"
 altkey     = "Mod1"
-terminal   = "rxvt" or "xterm"
+terminal   = "urxvtc" or "xterm"
 editor     = os.getenv("EDITOR") or "nano" or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
 -- user defined
-browser    = "firefox"
+browser    = "dwb"
 browser2   = "iron"
 gui_editor = "gvim"
 graphics   = "gimp"
@@ -128,13 +128,13 @@ calendarwidget:set_widget(mytextcalendar)
 calendarwidget:set_bgimage(beautiful.widget_bg)
 lain.widgets.calendar:attach(calendarwidget, { fg = "#FFFFFF", position = "bottom_right" })
 
-Mail IMAP check
+--[[ Mail IMAP check
 -- commented because it needs to be set before use
 mailwidget = lain.widgets.imap({
     timeout  = 180,
-    server   = "smtp.gmail.com",
-    mail     = "jonathankristofitz@gmail.com",
-    password = "ud10g5Izi9",
+    server   = "server",
+    mail     = "mail",
+    password = "keyring get mail",
     settings = function()
         mail_notification_preset.fg = "#FFFFFF"
         mail  = ""
@@ -148,7 +148,7 @@ mailwidget = lain.widgets.imap({
         widget:set_markup(markup(blue, mail) .. markup("#FFFFFF", count))
     end
 })
-
+]]
 
 -- MPD
 mpd_icon = wibox.widget.imagebox()
@@ -388,7 +388,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the upper right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mailwidget)
+    --right_layout:add(mailwidget)
     right_layout:add(batwidget)
     right_layout:add(spr_right)
     right_layout:add(prev_icon)
