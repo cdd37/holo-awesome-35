@@ -48,7 +48,7 @@ function run_once(cmd)
   awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
 end
 
-run_once("rxvt")
+run_once("urxvtd")
 run_once("unclutter -root")
 -- }}}
 
@@ -65,7 +65,7 @@ editor     = os.getenv("EDITOR") or "nano" or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
 -- user defined
-browser    = "firefox"
+browser    = "dwb"
 browser2   = "iron"
 gui_editor = "gvim"
 graphics   = "gimp"
@@ -128,7 +128,7 @@ calendarwidget:set_widget(mytextcalendar)
 calendarwidget:set_bgimage(beautiful.widget_bg)
 lain.widgets.calendar:attach(calendarwidget, { fg = "#FFFFFF", position = "bottom_right" })
 
-Mail IMAP check
+--Mail IMAP check
 -- commented because it needs to be set before use
 mailwidget = lain.widgets.imap({
     timeout  = 180,
@@ -282,6 +282,14 @@ netwidget = lain.widgets.net({
 })
 networkwidget = wibox.widget.background()
 networkwidget:set_widget(netwidget)
+wifi_icon = wibox.widget.imagebox()
+wifi_icon:set_image(beautiful.cpu)
+--WIFI BUTTON CHANGE ICON AND ADD WIFI-MENU
+wifi_icon:buttons(awful.util.table.join(awful.button({}, 1,
+function ()
+    awful.util.spawn_with_shell("rxvt")
+end)))
+networkwidget:set_widget(netwidget)
 networkwidget:set_bgimage(beautiful.widget_bg)
 
 -- Weather
@@ -420,6 +428,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the bottom right
     bottom_right_layout = wibox.layout.fixed.horizontal()
     bottom_right_layout:add(spr_bottom_right)
+    bottom_right_layout:add(wifi_icon)
     bottom_right_layout:add(netdown_icon)
     bottom_right_layout:add(networkwidget)
     bottom_right_layout:add(netup_icon)
